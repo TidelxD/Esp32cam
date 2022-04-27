@@ -281,7 +281,8 @@ if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || se
     }
   if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0)){
     sendDataPrevMillis = millis();
-   if (Firebase.RTDB.set(&fbdo, FILE_PHOTO, "/data/photo.jpg" , fbdo.downloadURL().c_str())){
+     // For Storing Image URL TO FIREBASE 
+   if (Firebase.RTDB.set(&fbdo,  "data/photoUrl" , fbdo.downloadURL().c_str())){
     Serial.println("fbdo.downloadURL().c_str() " + fbdo.dataPath());
     Serial.println("PASSED");
       Serial.println("PATH: " + fbdo.dataPath());
