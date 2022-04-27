@@ -239,6 +239,22 @@ if (Firebase.ready() && !taskCompleted){
   //The file systems for flash and SD/SDMMC can be changed in FirebaseFS.h.
    if (Firebase.Storage.upload(&fbdo, STORAGE_BUCKET_ID /* Firebase Storage bucket id */, FILE_PHOTO /* path to local file */, mem_storage_type_flash /* memory storage type, mem_storage_type_flash and mem_storage_type_sd */, FILE_PHOTO /* path of remote file stored in the bucket */, "image/jpeg" /* mime type */)){
     Serial.printf("\nDownload URL: %s\n", fbdo.downloadURL().c_str());
+     // For Realtime data base 
+       if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0)){
+    sendDataPrevMillis = millis();
+     // For Storing Image URL TO FIREBASE 
+   if (Firebase.RTDB.set(&fbdo,  "data/photoUrl" , fbdo.downloadURL().c_str())){
+    Serial.println("fbdo.downloadURL().c_str() " + fbdo.dataPath());
+    Serial.println("PASSED");
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+      
+  
+   }
+   else{
+    Serial.println(fbdo.errorReason());
+  }
+  }
   }
   else{
     Serial.println(fbdo.errorReason());
@@ -279,21 +295,7 @@ if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || se
           Serial.println("FAILED");
       Serial.println("REASON: " + fbdo.errorReason());
     }
-  if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 15000 || sendDataPrevMillis == 0)){
-    sendDataPrevMillis = millis();
-     // For Storing Image URL TO FIREBASE 
-   if (Firebase.RTDB.set(&fbdo,  "data/photoUrl" , fbdo.downloadURL().c_str())){
-    Serial.println("fbdo.downloadURL().c_str() " + fbdo.dataPath());
-    Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-      
-  
-   }
-   else{
-    Serial.println(fbdo.errorReason());
-  }
-  }
+
 }
 
 
